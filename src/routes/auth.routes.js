@@ -4,11 +4,8 @@ import { RegisterController } from "../controllers/register.controller.js";
 
 const router = Router();
 
-export const authRoutes = () => {
-    router.post('/login',loginController);
-    router.post('/register',RegisterController);
-}
-
-authRoutes();
+router.post('/login',loginController);
+    
+router.post('/register',RegisterController);
 
 export default router;

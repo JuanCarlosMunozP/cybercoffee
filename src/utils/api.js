@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { productRoutes } from '../routes/product.routes.js';
-import { authRoutes } from '../routes/auth.routes.js';
+import productRoutes  from '../routes/product.routes.js';
+import authRoutes  from '../routes/auth.routes.js';
 import db from '../models/database.model.js';
 
 dotenv.config()

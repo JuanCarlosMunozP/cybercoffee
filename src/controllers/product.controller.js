@@ -1,12 +1,14 @@
-import { createLaptopService, deleteLaptopByIdService, getAllLaptopService, getLaptopByIdService, updateLaptopByIdService } from "../services/product.service.js"
+import { createLaptopService, deleteLaptopByIdService, getAllLaptopService, getLaptopByIdService, searchProductsService, updateLaptopByIdService } from "../services/product.service.js"
 
 export const createLaptopController = async (req,res) => {
     try {
         const product = await createLaptopService(req.body);
 
+        console.log(req.body);
+
         return res.status(201).json({
-            message:"Producto creado exitosamente",
-            data:producto
+            message:"Product create successfully",
+            data:product
         })
     } catch (error) {
         return res.status(400).json({
@@ -22,6 +24,20 @@ export const getAllLaptopController = async (req,res) => {
         return res.status(200).json(products);
     } catch (error) {
         return res.status(400).json({error:error.message});
+    }
+}
+
+export const searchProductsController = async (req,res) => {
+    try {
+        const query = req.query.q;
+
+        const products = await searchProductsService(query);
+
+        return res.status(200).json(products);
+    } catch (error) {
+        return res.status(500).json({
+            error:error.message
+        })
     }
 }
 

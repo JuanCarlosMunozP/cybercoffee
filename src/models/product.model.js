@@ -12,6 +12,9 @@ const productModel = (sequelize,Sequelize) => {
         model: {
             type:Sequelize.STRING
         },
+        category: {
+            type:Sequelize.STRING
+        },
         price: {
             type:Sequelize.FLOAT
         }

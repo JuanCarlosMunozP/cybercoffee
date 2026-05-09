@@ -1,9 +1,10 @@
 import db from "../models/database.model.js";
 
 const Product = db.products;
+const sequelize = db.sequelize;
 
 export const createLaptopService = async (
-    {name,brand,model,serial,price}
+    {name,brand,model,serial,price,category}
 ) => {
     
     if (!brand || !serial) {
@@ -15,6 +16,7 @@ export const createLaptopService = async (
         brand,
         model,
         serial,
+        category,
         price
     })
 
@@ -29,6 +31,25 @@ export const getAllLaptopService = async () => {
     } else {
        return computers;
     }
+}
+
+export const searchProductsService = async (q) => {
+
+    const search = `
+        SELECT * FROM products
+        WHERE name LIKE :search
+    `
+    // const search = `
+    //     SELECT * FROM products
+    //     WHERE name LIKE '%${q}%'
+    // `;
+
+    const [results] = await sequelize.query(search, {
+        replacements: {
+            search: `%${q}`
+        }
+    });
+    return results;
 }
 
 export const getLaptopByIdService = async (id) => {

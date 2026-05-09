@@ -1,17 +1,20 @@
 import {Router} from 'express';
 
-import {createLaptopController, getAllLaptopController, getLaptopByIdController, updateLaptopByIdController, deleteLaptopByIdController} from '../controllers/product.controller.js';
+import {createLaptopController, getAllLaptopController, getLaptopByIdController, updateLaptopByIdController, deleteLaptopByIdController, searchProductsController} from '../controllers/product.controller.js';
 
 const router = Router();
 
-export const productRoutes = () => {
-    router.post('/products/laptop',createLaptopController);
-    router.get('/products/laptop',getAllLaptopController);
-    router.get('/products/laptop/:id',getLaptopByIdController);
-    router.put('/products/laptop/:id',updateLaptopByIdController);
-    router.delete('/products/laptop/:id',deleteLaptopByIdController);
-}
+router.post('/products/',createLaptopController);
 
-productRoutes();
+router.get('/products/',getAllLaptopController);
+
+router.get('/products/search',searchProductsController);
+
+router.get('/products/:id',getLaptopByIdController);
+
+router.put('/products/:id',updateLaptopByIdController);
+
+router.delete('/products/:id',deleteLaptopByIdController);
+
 
 export default router;
