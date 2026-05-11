@@ -7,12 +7,10 @@ async (
 
     const {email} = req.body;
 
-    const otp = 
-        await generateOtpService(email);
+    await generateOtpService(email);
 
     return res.status(200).json({
-        message:"OTP generated",
-        otp
+        message:"OTP generated successfully",
     })
 }
 
@@ -32,7 +30,7 @@ async (
     if (!result.success) {
 
         return res.status(401).json({
-            error:"Invalid OTP"
+            error:result.message
         })
     }
 
