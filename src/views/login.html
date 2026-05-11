@@ -23,7 +23,7 @@
                 <label>Password:</label>
                 <input type="password" name="password" placeholder="Enter password">
             </div>
-            <button>
+            <button type="submit">
                 Sign In
             </button>
         </form>
@@ -70,7 +70,7 @@
 
                 localStorage.setItem(
                     "refreshToken",
-                    data.accessToken
+                    data.refreshToken
                 )
 
                 localStorage.setItem(
@@ -86,7 +86,7 @@
 
                 if (!token) {
                     alert("Unathorized");
-                    window.localion.href = "/login";
+                    window.location.href = "/login";
                 }
 
                 console.log(token);

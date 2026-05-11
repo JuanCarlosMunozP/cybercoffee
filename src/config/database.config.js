@@ -1,10 +1,10 @@
 const config = {
-    HOST: 'localhost',
-    USER:'postgres',
-    PASSWORD:'postgres',
-    DB:'cybercoffeedb',
+    HOST: process.env.DB_HOST,
+    USER: process.env.DB_USER,
+    PASSWORD: process.env.DB_PASSWORD,
+    DB:process.env.DB_NAME,
     dialect:'postgres',
-    PORT: '5433',
+    PORT: process.env.DB_PORT,
     pool: {
         max:5,
         min:0,

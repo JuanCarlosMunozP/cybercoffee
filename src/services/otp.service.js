@@ -28,7 +28,7 @@ export const generateOtpService = async (
     return true;
 }
 
-export const verifyOtpService = (
+export const verifyOtpService = async (
     email,
     otp
 ) => {

@@ -10,8 +10,6 @@ import profileRoutes from '../routes/profile.routes.js';
 import otpRoutes from '../routes/otp.routes.js';
 import db from '../models/database.model.js';
 
-dotenv.config()
-
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -26,25 +24,29 @@ app.use(
     )
 )
 
-app.use("/login",(req,res) => {
+app.use('/css',express.static(
+    path.join(__dirname, "../public/css")
+))
+
+app.get("/login",(req,res) => {
     res.sendFile(
         path.join(__dirname,"../views/login.html")
     )
 })
 
-app.use("/register", (req,res) => {
+app.get("/register", (req,res) => {
     res.sendFile(
         path.join(__dirname,"../views/register.html")
     )
 })
 
-app.use("/products",(req,res) => {
+app.get("/products",(req,res) => {
     res.sendFile(
         path.join(__dirname,"../views/products.html")
     )
 })
 
-app.use("/profile",(req,res) => {
+app.get("/profile",(req,res) => {
     res.sendFile(
         path.join(__dirname,"../views/profile.html")
     )
