@@ -36,9 +36,24 @@ export const getAllLaptopService = async () => {
 export const searchProductsService = async (q) => {
 
     const search = `
-        SELECT * FROM products
+        SELECT 
+            id,
+            name,
+            brand,
+            serial,
+            model,
+            category,
+            price,
+            "createdAt",
+            "updatedAt"
+        FROM products
         WHERE name LIKE :search
     `
+
+    // const search = `
+    //     SELECT * FROM products
+    //     WHERE name LIKE :search
+    // `
     // const search = `
     //     SELECT * FROM products
     //     WHERE name LIKE '%${q}%'
@@ -46,7 +61,7 @@ export const searchProductsService = async (q) => {
 
     const [results] = await sequelize.query(search, {
         replacements: {
-            search: `%${q}`
+            search: `%${q}%`
         }
     });
     return results;

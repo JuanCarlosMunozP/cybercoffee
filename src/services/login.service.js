@@ -1,10 +1,12 @@
 import db from "../models/database.model.js";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const Users = db.users;
 
 export const loginService = async ({email,password}) => {
     
-    const userFound = await User.findOne({
+    const userFound = await Users.findOne({
         where: {
             email:email
         }
@@ -14,9 +16,44 @@ export const loginService = async ({email,password}) => {
         throw new Error("User not found");
     }
 
-    if (userFound.password !== password) {
-        throw new Error("Password incorrect");
+    const isMatch = await bcrypt.compare(
+        password,
+        userFound.password
+    );
+
+    if (!isMatch) {
+        throw new Error({error:"Invalid password"});
     }
 
-    return userFound;
+    const accessToken = jwt.sign(
+        {
+            id:userFound.id,
+            email:userFound.email,
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn:"30m", 
+            algorithm:"HS256"
+        }
+    )
+
+    const refreshToken = jwt.sign(
+        {
+            email:userFound.email
+        },
+        process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+        {
+            expiresIn:"7d"
+        }
+    )
+    return {
+        user: {
+            id:userFound.id,
+            name:userFound.name,
+            email:userFound.email,
+            role:userFound.role
+        },
+        accessToken:accessToken,
+        refreshToken:refreshToken,
+    };
 }

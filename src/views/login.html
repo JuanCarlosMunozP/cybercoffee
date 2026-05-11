@@ -3,19 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>CyberCoffee Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <div>
+    <div class="container">
+        <h1 class="title">CyberCoffee</h1>
+
+        <p class="subtitle">
+            Secure authentication platform
+        </p>
         <form method="POST">
-            <label>Email:</label>
-            <input type="email" name="email" value="email">
-            <label>Password:</label>
-            <input type="password" name="password" value="password">
+            <div class="form-group">
+                 <label>Email:</label>
+                <input type="email" name="email" placeholder="Enter email">
+            </div>
+           
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" placeholder="Enter password">
+            </div>
             <button>
                 Sign In
             </button>
         </form>
+
+        <div class="link">
+            <a href="/register">
+                Create account
+            </a>
+        </div>
     </div>
+    <script>
+        const form = document.querySelector("form");
+
+        form.addEventListener("submit",async(e) => {
+
+            e.preventDefault();
+
+            const formData = {
+                email:form.email.value,
+                password:form.password.value
+            }
+
+            try {
+                
+                const response = await fetch(
+                    "http://localhost:5000/login",
+                    {
+                        method:"POST",
+                        headers: {
+                            "Content-Type":"application/json"
+                        },
+                        body:JSON.stringify(formData)
+                    }
+                )
+
+                const data = await response.json();
+
+                console.log(data);
+
+                localStorage.setItem(
+                    "accessToken",
+                    data.accessToken
+                );
+
+                localStorage.setItem(
+                    "refreshToken",
+                    data.accessToken
+                )
+
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(data.user)
+                )
+
+                alert("Login successful");
+
+                const token = localStorage.getItem(
+                    "accessToken"
+                )
+
+                if (!token) {
+                    alert("Unathorized");
+                    window.localion.href = "/login";
+                }
+
+                console.log(token);
+
+                window.location.href = "/products";
+            } catch (error) {
+                
+                console.log(error);
+
+                alert("Register failed");
+            }
+        })
+    </script>
 </body>
 </html>

@@ -3,20 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Products</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <form method="POST">
-        <label>Name:</label>
-        <input type="text" value="name" name="name">
-        <label>Serial:</label>
-        <input type="text" value="serial" name="serial">
-        <label>Brand:</label>
-        <input type="text" value="brand" name="brand">
-        <label>Model:</label>
-        <input type="text" value="model" name="model">
-        <label>Price:</label>
-        <input type="number" value="price" name="price">
-    </form>
+   <div class="products-container">
+
+    <h1 class="title">
+        CyberCoffee Products
+    </h1>
+
+    <div class="search-box">
+        <input type="text" id="search" placeholder="Search products...">
+    </div>
+   </div>
+
+   <div class="actions">
+    <button id="toggle-form-btn">
+        + Add Product
+    </button>
+   </div>
+
+   <form id="product-form" class="hidden-form">
+    <input type="text" name="name" placeholder="Product name" required>
+    <input type="text" name="brand" placeholder="Brand" required>
+    <input type="text" name="serial" placeholder="Serial" required>
+    <input type="text" name="model" placeholder="Model" required>
+    <input type="number" name="price" placeholder="Price" required>
+
+    <button type="submit">
+        Register product
+    </button>
+   </form>
+
+   <div class="grid" id="products-id"></div>
+
+    <script>
+        const grid = document.querySelector(
+            "#products.grid"
+        )
+
+        const toggleBtn = document.querySelector(
+            "#toggle-form-btn"
+        )
+
+        const productForm = document.querySelector(
+            "#product-form"
+        )
+
+        toggleBtn.addEventListener(
+            "click",
+            () => {
+
+                productForm.classList.toggle(
+                    "show-form"
+                )
+            }
+        )
+
+        const loadProducts = async () => {
+            try {
+                
+                const response = await fetch(
+                    "http://localhost:5000/products"
+                )
+
+                const products = await response.json();
+
+                console.log(products);
+
+                renderProducts(products);
+            } catch (error) {
+                console.log(error);
+
+                alert("Error loading products");
+            }
+        }
+
+        const renderProducts = (products) => {
+
+            grid.innerHTML = "";
+
+            products.forEach(product => {
+                grid.innerHTML = `
+                    <div class="card">
+                        <h3>
+                            ${product.name}
+                        <h3>
+
+                        <p>
+                            <strong>Brand:</strong>
+                            ${product.brand}
+                        </p>
+
+                        <p>
+                            <strong>Model:</strong>
+                            ${product.model}
+                        </p>
+                        <p>
+                            <strong>Serial:</strong>
+                            ${product.serial}
+                        </p>
+                        <p>
+                            <strong>Price:</strong>
+                            ${product.price}
+                        </p>
+                    </div>
+                `
+            })
+
+            document.querySelector(
+                "#search"
+            ).addEventListener(
+                "keyup",
+                async (e) => {
+
+                    const value = e.target.value;
+
+                    try {
+                        
+                        const response = await fetch(
+                            `http://localhost:5000/products/search?q=${value}`
+                        );
+
+                        const products = await response.json();
+
+                        renderProducts(products);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            )
+        }
+
+        productForm.addEventListener(
+                "submit",
+                async (e) => {
+
+                    e.preventDefault();
+
+                    const formData = {
+                        name:productForm.name.value,
+                        brand:productForm.brand.value,
+                        serial:productForm.serial.value,
+                        model:productForm.model.value,
+                        price:productForm.price.value
+                    }
+
+                    try {
+                        const response = await fetch(
+                            "http://localhost:5000/products",
+                            {
+                                method:"POST",
+
+                                headers: {
+                                    "Content-Type":"application/json"
+                                },
+
+                                body:JSON.stringify(formData)
+                            }
+                        )
+
+                        const data = await response.json();
+
+                        console.log(data);
+
+                        alert(
+                            "Product registered successfully"
+                        )
+
+                        productForm.reset()
+
+                        productForm.classList.remove(
+                            "show-form"
+                        )
+
+                        loadProducts();
+                    } catch (error) {
+                       console.log(error);
+                       alert(
+                        "Error registering product"
+                       ) 
+                    }
+                }
+                
+            )
+            loadProducts();
+    </script>
 </body>
 </html>

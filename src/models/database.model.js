@@ -25,9 +25,7 @@ async function createDatabase(dbName) {
         if (error.code === '42P04') {
             console.error(`Database "${dbName}" already exists.`);
         }
-    } finally {
-        await client.end();
-    }
+    } 
 }
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {

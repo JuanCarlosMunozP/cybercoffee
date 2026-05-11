@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>User Profile</h1>
+            <div id="profile-data"></div>
+            <button id="logout-btn">
+                Logout
+            </button>
+        </div>
+    </div>
+    <script>
+        const token = localStorage.getItem(
+            "accessToken"
+        )
+
+        if (!token) {
+            alert("Unauthorized");
+
+            window.location.href = "/login";
+        }
+
+        const getProfile = async () => {
+            try {
+                
+                const response = await fetch(
+                    "http://localhost:5000/profile/1",
+                    {
+                        method:"GET",
+
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                )
+
+                const data = await response.json();
+
+                document.querySelector(
+                    "#profile-data"
+                ).innerHTML = `
+                    <div class="profile-item">
+                        <strong>ID:</strong>
+                        ${data[0][0].id}
+                    </div>
+                    <div>
+                        <strong>Name:</strong>
+                        ${data[0][0].name}
+                    </div>
+                    <div>
+                        <strong>Email:</strong>
+                        ${data[0][0].email}
+                    </div>
+                `
+            } catch (error) {
+                console.log(error);
+
+                alert("Error loading profile");
+            }
+        };
+
+        getProfile();
+
+        document.querySelector(
+            "#logout-btn"
+        ).addEventListener(
+            "click",
+            () => {
+
+                localStorage.clear();
+
+                window.location.href = 
+                "/login";
+            }
+        )
+    </script>
+</body>
+</html>
