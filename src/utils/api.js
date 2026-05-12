@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import {fileURLToPath} from 'url';
@@ -9,6 +8,7 @@ import adminRoutes from '../routes/admin.routes.js';
 import profileRoutes from '../routes/profile.routes.js';
 import otpRoutes from '../routes/otp.routes.js';
 import db from '../models/database.model.js';
+
 
 const app = express();
 
@@ -23,10 +23,6 @@ app.use(
         path.join(__dirname,"../")
     )
 )
-
-app.use('/css',express.static(
-    path.join(__dirname, "../public/css")
-))
 
 app.get("/login",(req,res) => {
     res.sendFile(

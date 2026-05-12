@@ -5,10 +5,6 @@ import dbUser from '../models/user.model.js';
 
 import Sequelize from 'sequelize';
 
-
-console.log(process.env.DB_PASSWORD);
-console.log(typeof process.env.DB_PASSWORD);
-
 const client = new Client({
     user:dbConfig.USER,
     host:dbConfig.HOST,
