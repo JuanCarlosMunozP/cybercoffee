@@ -33,7 +33,7 @@ export const loginService = async ({email,password}) => {
         process.env.JWT_SECRET,
         {
             expiresIn:"30m", 
-            algorithm:"HS256"
+            algorithm:"RS256"
         }
     )
 
